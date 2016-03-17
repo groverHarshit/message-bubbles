@@ -49,7 +49,7 @@ function revealMessage(messages)
         
         
         // Check for two left messages in a row
-        if (!((messages[i]).classList.contains('right-msg')) && !((messages[i]).classList.contains('right-msg') || (messages[i+1]).classList.contains('time')))
+        if (!((messages[i]).classList.contains('right-msg')) && !((messages[i+1]).classList.contains('right-msg') || (messages[i+1]).classList.contains('time')))
         {
           // Next message is still a left message, remove the tail on the current message
           (messages[i]).classList.add('no-tail');
