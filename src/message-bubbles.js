@@ -1,5 +1,14 @@
-var emojis = { ':)': '😊', ':(': '😡', ':D': '😁', ';)': '😉', ':*': '😘', '*)': '😍', ':P': '😝', ';P': '😜', ":'(": '😢', 'X(': '😣', ':O': '😱', ':o': '😲', ':/': '😩', ':|': '😔' };
-
+/**
+ * ====================================
+ *          Message Bubbles
+ * ===================================
+ *
+ * Author.......: Michael Rouse
+ * Language.....: JavaScript
+ * Date.........: March 2016
+ *
+ * Description..: Javascript for SMS Style Message Bubbles
+ */
 // Load Event Listener, to load all the items in the chat one-by-one
 window.addEventListener('load', function(){
   var messages = document.querySelectorAll('ul.rounded-messages.reveal-messages li'); // Get all messages
@@ -11,15 +20,6 @@ window.addEventListener('load', function(){
     (messages[i]).addEventListener('animationend', function(){
       revealMessage(messages); // Reveal the next message
     });
-    
-    // Replace any text emoticons with the unicode emoji 
-    var str;
-    for (var emoji in emojis)
-    {
-      str = (messages[i]).textContent;
-      
-      (messages[i]).innerHTML = (messages[i]).innerHTML.replace(str, str.replace(new RegExp(escapeChars(emoji), 'g'), emojis[emoji]));
-    }
   }
   
   // Reveal the first message to start chain reaction (thanks to the AnimationEnd event listener)
@@ -63,9 +63,3 @@ function revealMessage(messages)
   } // End For 
 } // End revealMessage()
 
-
-// Escapes special characters in the emojis 
-function escapeChars(regular_exp)
-{
-  return regular_exp.replace(/([()[{*+.$^\\|?])/g, '\\$1');
-}
