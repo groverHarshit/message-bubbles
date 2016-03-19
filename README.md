@@ -52,27 +52,6 @@ msg-animation-superfast
 Add one of these classes to your ```<ul>``` element to control the speed.
 
 
-### Emojis 
-This utilizes emojify.js, another project I work on. 
-Below is a list of supported emoticons, and the emojis they turn into.
-
-```
-:)  => 😊
-:(  => 😡
-:D  => 😁
-;)  => 😉
-:*  => 😘
-*)  => 😍
-:P  => 😝
-XP  => 😜
-:'( => 😢
-X(  => 😣
-:O  => 😱
-:o  => 😲
-:/  => 😩
-:|  => 😔
-```
-
 ## Example 
 [See an example on CodePen](http://codepen.io/mwrouse/full/GZrKYb/)
 
