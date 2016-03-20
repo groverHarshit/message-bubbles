@@ -9,57 +9,61 @@
  *
  * Description..: Javascript for SMS Style Message Bubbles
  */
-// Load Event Listener, to load all the items in the chat one-by-one
-window.addEventListener('load', function(){
-  var messages = document.querySelectorAll('ul.rounded-messages.reveal-messages li'); // Get all messages
-  
-  // Loop through all messages
-  for (var i = 0; i < messages.length; i++)
-  {
-    // AnimationEnd Event Listner, loads next element after one loads 
-    (messages[i]).addEventListener('animationend', function(){
-      revealMessage(messages); // Reveal the next message
-    });
-  }
-  
-  // Reveal the first message to start chain reaction (thanks to the AnimationEnd event listener)
-  revealMessage(messages);
-  
-}); // End Load Event Listener
-
-
-// Reveals one message at a time from a list of messages 
-function revealMessage(messages)
-{
-  // Loop through all messages 
-  for (var i = 0; i < messages.length; i++)
-  {
-    // If the message is not visible, reveal it
-    if (!(messages[i]).classList.contains('msg-visible'))
+(function(){
+  window.addEventListener('load', function(){
+    // Get all messages 
+    var messages = document.querySelectorAll('ul.rounded-messages.reveal-messages li');
+    
+    // Only try and show messages if some were found 
+    if (messages.length > 0)
     {
-      // Make sure there is a next message to reference
-      if (i < (messages.length - 1))
-      {
-        // Check for two right messages in a row
-        if ((messages[i]).classList.contains('right-msg') && (messages[i+1]).classList.contains('right-msg'))
-        {
-          // Next message is still a right message, remove the tail on the current message 
-          (messages[i]).classList.add('no-tail');
-        }
-        
-        
-        // Check for two left messages in a row
-        if (!((messages[i]).classList.contains('right-msg')) && !((messages[i+1]).classList.contains('right-msg') || (messages[i+1]).classList.contains('time')))
-        {
-          // Next message is still a left message, remove the tail on the current message
-          (messages[i]).classList.add('no-tail');
-        }
-      }
+      revealMessages(messages);
+    }
+  });
+  
+  
+  /**
+   * Function.....: Reveal Messages
+   * Author.......: Michael Rouse
+   * Parameters...: messages - the list of messages to display 
+   * Description..: Displays messages one at a time 
+   */
+  function revealMessages(messages)
+  {
+    // Set static variable to remember what message number was last displayed 
+    revealMessages.msg = (revealMessages.msg === undefined) ? 0 : revealMessages.msg;
+    
+    if (revealMessages.msg < messages.length)
+    {
+      // Set AnimationEnd Event Listener, to load the next message when this one finishes 
+      (messages[revealMessages.msg]).addEventListener('animationend', function(){
+        revealMessages(messages); // Reveal the next message
+      });
       
-      // Show the message, then exit the loop 
-      (messages[i]).classList.add('msg-visible');
-      i = messages.length;
-    } 
-  } // End For 
-} // End revealMessage()
+
+      // Reveal the message if it is not already visible 
+      if (!(messages[revealMessages.msg]).classList.contains('msg-visible'))
+      {
+        // Make sure there is a next message to reference 
+        if (revealMessages.msg < (messages.length - 1))
+        {
+          // Remove the tail if this message is on the right, and the next message is on the right, OR if it a left message, and the next message is a left message
+          if ( ((messages[revealMessages.msg]).classList.contains('right-msg') && (messages[revealMessages.msg+1]).classList.contains('right-msg')) || 
+               (!(messages[revealMessages.msg]).classList.contains('right-msg') && !((messages[revealMessages.msg+1]).classList.contains('right-msg') || (messages[revealMessages.msg+1]).classList.contains('time'))) 
+              )
+          {
+            (messages[revealMessages.msg]).classList.add('no-tail'); // No tail on this message
+          }
+        }
+         
+        // Show the message 
+        (messages[revealMessages.msg]).classList.add('msg-visible');  
+      } // End if 
+      
+      // Advance the message counter
+      revealMessages.msg++;
+    }
+    
+  } // End revealMessages()
+}());
 
